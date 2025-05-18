@@ -1,5 +1,8 @@
 import { registerRootComponent } from 'expo';
 
+//Para criar o projeto: npx create-expo-app --template
+//Para executar o projeto: npx expo start
+
 import App from './App';
 
 // registerRootComponent calls AppRegistry.registerComponent('main', () => App);
