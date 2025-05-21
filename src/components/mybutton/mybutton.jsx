@@ -2,8 +2,10 @@ import { Text, TouchableOpacity } from "react-native";
 import {styles} from "./mybutton.style.js";
 
 function MyButton(props){
-    return <TouchableOpacity style={styles.btnYellow}>
-        <Text style={styles.textDark}>{props.text}</Text>
+    return <TouchableOpacity
+     style={props.theme == "red" ? styles.btnRed : styles.btnYellow }>
+        <Text style={props.theme == "red" ? styles.textLight : styles.textDark}>
+        {props.text}</Text>
     </TouchableOpacity>
 }
 

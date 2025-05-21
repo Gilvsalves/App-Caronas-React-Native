@@ -3,7 +3,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Home from "./screens/home/home.jsx";
 import Passenger from "./screens/passenger/passenger.jsx";
-import Ride from "./screens/ride/ride.jsx"
+import Ride from "./screens/ride/ride.jsx";
+import RideDetail from "./screens/ride-detail/ride-detail.jsx"
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +28,15 @@ function Routes(){
             />
 
             <Stack.Screen name="ride" component={Ride}
+            options={{
+                
+                headerTitle: "Viagens disponíveis",
+                headerTitleAlign: "center",
+                
+            }}
+            />
+
+            <Stack.Screen name="ride-detail" component={RideDetail}
             options={{
                 headerShadowVisible: false,
                 headerTitle: "",
