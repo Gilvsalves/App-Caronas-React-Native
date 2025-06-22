@@ -33,7 +33,11 @@ export const styles = {
         borderWidth: 1,
         borderColor: "#cccccc",
         padding: 10,
-
-    }
+    },
+    loading: {
+        flex: 1 ,
+        alignItems: "center",
+        justifyContent: "center" 
+    },
     
 };
