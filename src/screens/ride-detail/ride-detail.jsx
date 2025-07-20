@@ -4,6 +4,7 @@ import MapView, {Marker, PROVIDER_DEFAULT} from "react-native-maps";
 import { styles } from "./ride-detail.style.js";
 import { useEffect, useState } from "react";
 import icons from "../../constants/icons.js";
+import {api, HandleError} from "../../constants/api.js"
 
 function RideDetail(props) {
 
@@ -12,17 +13,62 @@ function RideDetail(props) {
     const [title, setTitle] = useState("");
     const [ride, setRide] = useState({});
 
-    
+    async function RequestRideDetail(){
+
+        //Busca os  dados da API.
+
+        // const response = {
+        //     ride_id: 1,
+        //     passenger_user_id: 1,
+        //     passenger_name: "Heber Stein Mazutti",
+        //     passenger_phone: "(81) 99999-9999",
+        //     pickup_address: "R. Manuel de Medeiros, 1-33 - Dois Irmãos",
+        //     pickup_date: "2025-02-17",
+        //     pickup_latitude: "-8.016550",
+        //     pickup_longitude: "-34.951012",
+        //     dropoff_address: "Shopping Plaza",
+        //     status: "A",
+        //     driver_user_id: 2,
+        //     driver_name: "Gilvs Alves",
+        //     driver_phone: "(81)99999-9999",
+            
+        // };
+
+        try {
+            console.log("Buscando corridas na API...");
+            const response = await api.get("/rides/" + rideId );
+              //console.log("Resposta da API obtida:", response.data);
+
+            if(response.data)
+                setRide(response.data);
+                setTitle(response.data.passenger_name + " - " + response.data.passenger_phone);
+
+        } catch (error) {
+            console.error("Erro na requisição:", error);
+            HandleError(error);
+            props.navigation.goBack();
+        }
+    }
 
     async function AcceptRide(){
         const json = {
             driver_user_id: userId,
-            ride_id: rideId
         }
 
-        console.log("Aceitar ", json);
+        try {
+            console.log("Aceitando corrida na API...");
+            const response = await api.put("/rides/"+ rideId +"/accept", json );
+              //console.log("Resposta da API obtida:", response.data);
 
-        props.navigation.goBack();
+            if(response.data)
+                console.log("Corrida aceita!")
+                props.navigation.goBack();
+
+        } catch (error) {
+            console.error("Erro na requisição:", error);
+            HandleError(error);
+            props.navigation.goBack();
+        }
         
     }
 
@@ -32,39 +78,20 @@ function RideDetail(props) {
             ride_id: rideId
         }
 
-        console.log("Cancelar ", json);
+        try {
+            console.log("Cancelando corrida na API...");
+            const response = await api.put("/rides/"+ rideId +"/cancel", json );
+              //console.log("Resposta da API obtida:", response.data);
 
-        props.navigation.goBack();
-
-    }
-
-    async function RequestRideDetail(){
-
-        //Busca os  dados da API.
-
-        const response = {
-            ride_id: 1,
-            passenger_user_id: 1,
-            passenger_name: "Heber Stein Mazutti",
-            passenger_phone: "(81) 99999-9999",
-            pickup_address: "R. Manuel de Medeiros, 1-33 - Dois Irmãos",
-            pickup_date: "2025-02-17",
-            pickup_latitude: "-8.016550",
-            pickup_longitude: "-34.951012",
-            dropoff_address: "Shopping Plaza",
-            status: "A",
-            driver_user_id: 2,
-            driver_name: "Gilvs Alves",
-            driver_phone: "(81)99999-9999",
+            if(response.data)
+                console.log("Corrida cancelada!")
+                props.navigation.goBack();
             
-        };
-
-        if(response.passenger_name){
-            setTitle(response.passenger_name + " - " + response.passenger_phone);
-            setRide(response); 
-        }
-
-        return response;
+        } catch (error) {
+            console.error("Erro na requisição:", error);
+            HandleError(error);
+            props.navigation.goBack();
+        } ;
     }
 
     useEffect(()=> {
